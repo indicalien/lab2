@@ -30,6 +30,9 @@ public:
     float w;
 	float dir;
 	float pos[2];
+    int c1;
+    int c2;
+    int c3;
 	Global();
 
 } g;
@@ -158,10 +161,13 @@ void X11_wrapper::reshape_window(int width, int height)
 	g.xres = width;
 	g.yres = height;
 	//
+    cout << "Color\n"; 
+    glColor3ub(150,0,0);
 	glViewport(0, 0, (GLint)width, (GLint)height);
 	glMatrixMode(GL_PROJECTION); glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
 	glOrtho(0, g.xres, 0, g.yres, -1, 1);
+
 }
 
 void X11_wrapper::check_resize(XEvent *e)
@@ -245,15 +251,16 @@ void init_opengl(void)
 	//Set 2D mode (no perspective)
 	glOrtho(0, g.xres, 0, g.yres, -1, 1);
 	//Set the screen background color
-	glClearColor(0.1, 1, 0.1, .05);
+	glClearColor(0, 100, 0, 0);
 }
 
 void physics()
 {
-	//No physics yet.
+
     g.pos[0] += g.dir;
 	if (g.pos[0] >= (g.xres-g.w)) {
 		g.pos[0] = (g.xres-g.w);
+
 		g.dir = -g.dir;
 	}
 	if (g.pos[0] <= g.w) {
@@ -269,9 +276,10 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	//draw the box
 	glPushMatrix();
-	glColor3ub(50, 150, 150);
+	glColor3ub(100,100,100);
 	glTranslatef(g.pos[0], g.pos[1], 0.0f);
 	glBegin(GL_QUADS);
+    
 		glVertex2f(-g.w, -g.w);
 		glVertex2f(-g.w,  g.w);
 		glVertex2f( g.w,  g.w);
