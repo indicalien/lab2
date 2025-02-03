@@ -41,6 +41,7 @@ public:
     int c1;
     int c2;
     int c3;
+
 	Global();
 
 } g;
@@ -174,15 +175,25 @@ void X11_wrapper::reshape_window(int width, int height)
 	//Window has been resized.
 	g.xres = width;
 	g.yres = height;
-	//
-    cout << "Color\n"; 
-    glColor3ub(150,0,0);
-	glViewport(0, 0, (GLint)width, (GLint)height);
-	glMatrixMode(GL_PROJECTION); glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
-	glOrtho(0, g.xres, 0, g.yres, -1, 1);
+    
+	if(g.yres <= 400){
+        glColor3ub(0,0,100);
+        glViewport(0, 0, (GLint)width, (GLint)height);
+	    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+	    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+	    glOrtho(0, g.xres, 0, g.yres, -1, 1);
 
+    } 
+   
+    if(g.yres >= 400){
+        glColor3ub(100,0,0);
+        glViewport(0, 0, (GLint)width, (GLint)height);
+	    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+	    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+	    glOrtho(0, g.xres, 0, g.yres, -1, 1);
+    }
 }
+    //
 
 void X11_wrapper::check_resize(XEvent *e)
 {
@@ -292,10 +303,9 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	//draw the box
 	glPushMatrix();
-	glColor3ub(100,100,100);
 	glTranslatef(g.pos[0], g.pos[1], 0.0f);
 	glBegin(GL_QUADS);
-    
+     
 		glVertex2f(-g.w, -g.w);
 		glVertex2f(-g.w,  g.w);
 		glVertex2f( g.w,  g.w);
